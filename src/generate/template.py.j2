@@ -1,0 +1,27 @@
+
+@classmethod
+def {{ function_name }}({% for arg in args %}{{ arg.name }}{% if arg.default is not none %}={{ arg.default }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}):
+    """{{ description }}"""
+
+    url = EnvEntity.OPENAPI_BASE_URL + "{{ url }}"
+    {% if headers is not undefined -%}
+    headers = {{ headers|indent(8) }}
+    {%- endif %}
+    {% if params is not undefined -%}
+    params = {{ params|indent(8) }}
+    {%- endif %}
+    {% if data  is not undefined -%}
+    data = {{ data|indent(8) }}
+    {%- endif %}
+    code, resp = HttpRequest.http_request(url, "{{ method }}" {% if params is not undefined %},params=params{% endif %}{% if data is not undefined %},data=data{% endif %})
+    assert code == 200
+    assert resp['requestInfo']['flag'] is True
+    return resp
+
+
+
+
+
+
+
+
